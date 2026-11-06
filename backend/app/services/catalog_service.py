@@ -300,6 +300,38 @@ class CatalogService:
             popular_name = "इंडस्ट्रियल लीज्ड लाइन व सिक्यूरिटी (Industrial Leased Line & Security)"
             pro_name = "स्मार्ट फ़ैक्ट्री IoT ऑटोमेशन (Smart Factory IoT Suite)"
 
+        # Curated bundles must still obey the customer's actual eligibility.
+        eligible_ids = {
+            product["product_id"]
+            for product in self.filter_eligible_products(
+                city_tier=city_tier,
+                employee_count=employee_count,
+                num_sites=num_sites,
+                has_gstin=has_gstin,
+                segment=seg_code,
+            )
+        }
+
+        def eligible_bundle(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+            selected = [item for item in items if item["product_id"] in eligible_ids]
+            changed = True
+            while changed:
+                changed = False
+                selected_ids = {item["product_id"] for item in selected}
+                filtered = []
+                for item in selected:
+                    dependencies = self.products[item["product_id"]]["requires_one_of"]
+                    if dependencies and not any(dep in selected_ids for dep in dependencies):
+                        changed = True
+                        continue
+                    filtered.append(item)
+                selected = filtered
+            return selected or [{"product_id": next(iter(eligible_ids)), "quantity": 1}]
+
+        starter_items = eligible_bundle(starter_items)
+        popular_items = eligible_bundle(popular_items)
+        pro_items = eligible_bundle(pro_items)
+
         return {
             "detected_segment": seg_code,
             "bundles": [

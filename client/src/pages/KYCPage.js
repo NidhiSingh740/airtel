@@ -11,7 +11,7 @@ const API = 'http://127.0.0.1:8000';
 
 // --- Specimen list ---
 const SPECIMENS = [
-  { id: 'K01', label: 'K01 — Vindhya Tours (Expected: Valid)' },
+  { id: 'K01', label: 'K01 — Vindhya Tours (Expected: Cancelled GSTIN)' },
   { id: 'K02', label: 'K02 — Harmony Dental (Expected: Valid)' },
   { id: 'K03', label: 'K03 — Ganesh Woodcraft (Expected: Valid)' },
   { id: 'K04', label: 'K04 — Test Case' },

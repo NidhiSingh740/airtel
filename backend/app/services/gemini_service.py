@@ -16,7 +16,7 @@ class GeminiAdvisorService:
     def __init__(self, catalog_service, registry_service):
         self.catalog = catalog_service
         self.registry = registry_service
-        self.model_name = "gemini-flash-latest"
+        self.model_name = "gemini-3.5-flash-lite"
         self.model = genai.GenerativeModel(self.model_name) if api_key else None
 
     def _build_system_context(self, context: Optional[Dict[str, Any]], lang: str) -> str:

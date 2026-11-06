@@ -38,11 +38,14 @@ class KYCValidator:
         warnings: List[str] = []
 
         # 1. Document Completeness
+        # A supplied image is not a complete document unless OCR found the field
+        # required to verify that document. This prevents an unreadable upload
+        # from bypassing registry and cross-document checks.
         docs_present = {
-            "GST Certificate": gst_doc is not None,
-            "Udyam Certificate": udyam_doc is not None,
-            "Signatory ID": signatory_doc is not None,
-            "Address Proof": address_doc is not None
+            "GST Certificate": bool(gst_doc and gst_doc.get("gstin")),
+            "Udyam Certificate": bool(udyam_doc and udyam_doc.get("udyam_number")),
+            "Signatory ID": bool(signatory_doc and signatory_doc.get("name")),
+            "Address Proof": bool(address_doc and address_doc.get("bill_date"))
         }
         all_docs_uploaded = all(docs_present.values())
         checks.append({
@@ -52,7 +55,10 @@ class KYCValidator:
         })
         if not all_docs_uploaded:
             missing = [k for k, v in docs_present.items() if not v]
-            errors.append(f"Missing required documents: {', '.join(missing)}")
+            errors.append(
+                "Required information could not be extracted from: "
+                f"{', '.join(missing)}. Please upload a clear, readable document."
+            )
 
         # 2. GSTIN Checks
         gstin_val = ""

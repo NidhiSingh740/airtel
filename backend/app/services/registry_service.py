@@ -6,6 +6,8 @@ from typing import Optional, Dict, Any
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "YTL_TrackA_Udyam_Digital_Data"
 
 class RegistryService:
+    GSTIN_CHECKSUM_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
     def __init__(self, data_dir: Optional[Path] = None):
         self.data_dir = data_dir or DATA_DIR
         self.gstin_records: Dict[str, Dict[str, Any]] = {}
@@ -46,7 +48,24 @@ class RegistryService:
         pattern = r"^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9A-Z]{1}Z[0-9A-Z]{1}$"
         if not re.match(pattern, gstin):
             return {"valid": False, "error": "Invalid GSTIN pattern format."}
-            
+
+        # GSTIN uses a base-36 Luhn-style check digit over its first 14 characters.
+        alphabet = RegistryService.GSTIN_CHECKSUM_ALPHABET
+        checksum_total = 0
+        for index, char in enumerate(gstin[:14]):
+            product = alphabet.index(char) * (1 if index % 2 == 0 else 2)
+            checksum_total += (product // 36) + (product % 36)
+
+        expected_check_digit = alphabet[(36 - (checksum_total % 36)) % 36]
+        if gstin[-1] != expected_check_digit:
+            return {
+                "valid": False,
+                "error": (
+                    "Invalid GSTIN checksum "
+                    f"(expected '{expected_check_digit}', got '{gstin[-1]}')."
+                )
+            }
+
         return {"valid": True, "gstin": gstin}
 
     def lookup_gstin(self, gstin: str) -> Dict[str, Any]:

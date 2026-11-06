@@ -53,8 +53,10 @@ export default function Advisor() {
   // Business Context State
   const [businessType, setBusinessType] = useState(savedData?.businessType || null);
   const [employeeCount, setEmployeeCount] = useState(savedData?.employeeCount || null);
+  const [numSites, setNumSites] = useState(savedData?.numSites || 1);
   const [cityTier, setCityTier] = useState(savedData?.cityTier || null);
   const [step, setStep] = useState(savedData?.step || 1);
+  const [advisorState, setAdvisorState] = useState(savedData?.advisorState || { step: 1, city_tier: 2 });
 
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -71,14 +73,16 @@ export default function Advisor() {
           messages,
           businessType,
           employeeCount,
+          numSites,
           cityTier,
-          step
+          step,
+          advisorState
         })
       );
     } catch (e) {
       console.warn('Failed to persist advisor state to localStorage', e);
     }
-  }, [messages, businessType, employeeCount, cityTier, step]);
+  }, [messages, businessType, employeeCount, numSites, cityTier, step, advisorState]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -90,37 +94,7 @@ export default function Advisor() {
 
   // Handle Option Click Directly In Chat
   const handleSelectOption = (optionLabel, optionValue) => {
-    let nextStep = step;
-    let nextBiz = businessType;
-    let nextEmp = employeeCount;
-    let nextCity = cityTier;
-
-    if (['Retail / Kirana Store', 'Dental / Diagnostic Clinic', 'Professional Office / CA Firm', 'Restaurant / Food Outlet', 'Small Manufacturing Unit'].includes(optionValue)) {
-      nextBiz = optionValue;
-      setBusinessType(optionValue);
-      nextStep = 2;
-      setStep(2);
-    } else if (['1 - 5 staff', '5 - 15 staff', '15 - 50 staff', 'Multi-branch chain'].includes(optionValue)) {
-      nextEmp = optionValue;
-      setEmployeeCount(optionValue);
-      nextStep = 3;
-      setStep(3);
-    } else if (['Tier-1 Metro City', 'Tier-2 City', 'Tier-3 Town'].includes(optionValue)) {
-      nextCity = optionValue;
-      setCityTier(optionValue);
-      nextStep = 4;
-      setStep(4);
-    } else if (['High-speed broadband and SIMs', 'POS billing and payment backup', 'Cloud CCTV and surveillance'].includes(optionValue)) {
-      nextStep = 5;
-      setStep(5);
-    }
-
-    handleSendMessage(optionValue, optionLabel, {
-      businessType: nextBiz,
-      employeeCount: nextEmp,
-      cityTier: nextCity,
-      step: nextStep
-    });
+    handleSendMessage(optionValue, optionLabel);
   };
 
   const handleSendMessage = async (customText = null, displayLabel = null, overrideContext = null) => {
@@ -141,6 +115,7 @@ export default function Advisor() {
     const activeContext = overrideContext || {
       businessType,
       employeeCount,
+      numSites,
       cityTier,
       step,
       language: i18n.language
@@ -149,7 +124,8 @@ export default function Advisor() {
     try {
       const response = await axios.post('http://localhost:8000/api/chat', {
         message: textToSend,
-        context: activeContext
+        context: activeContext,
+        state: advisorState
       }, { timeout: 15000 });
 
       const botReply = response.data.reply || response.data.message;
@@ -159,11 +135,17 @@ export default function Advisor() {
       if (response.data.state?.step) {
         setStep(response.data.state.step);
       }
+      if (response.data.state) {
+        setAdvisorState(response.data.state);
+      }
       if (response.data.state?.business_type) {
         setBusinessType(response.data.state.business_type);
       }
       if (response.data.state?.employee_count) {
         setEmployeeCount(String(response.data.state.employee_count));
+      }
+      if (response.data.state?.num_sites) {
+        setNumSites(response.data.state.num_sites);
       }
       if (response.data.state?.city_tier) {
         setCityTier(String(response.data.state.city_tier));
@@ -183,6 +165,7 @@ export default function Advisor() {
             savings: recData.quote?.estimated_monthly_savings ? `Save ₹${recData.quote.estimated_monthly_savings.toLocaleString()}/mo vs current` : 'Inclusive of all SLAs',
             items: recData.quote?.items || []
           } : null,
+          bundles: response.data.all_bundles || [],
           options: nextOptions
         }
       ]);
@@ -217,8 +200,10 @@ export default function Advisor() {
 
     setBusinessType(null);
     setEmployeeCount(null);
+    setNumSites(1);
     setCityTier(null);
     setStep(1);
+    setAdvisorState({ step: 1, city_tier: 2 });
     setMessages([
       {
         id: Date.now(),
@@ -309,6 +294,8 @@ export default function Advisor() {
                           onClick={() => {
                             if (opt.value === 'VIEW_QUOTE') navigate('/quote');
                             else if (opt.value === 'START_KYC') navigate('/kyc');
+                            else if (opt.value === 'START_OVER') handleResetChat();
+                            else if (opt.value === 'TOO_EXPENSIVE') handleSendMessage('This looks expensive', opt.label);
                             else handleSelectOption(opt.label, opt.value);
                           }}
                           className="px-3.5 py-2 rounded-xl bg-white hover:bg-airtel-red hover:text-white border border-airtel-border hover:border-airtel-red text-airtel-charcoal text-xs font-semibold shadow-sm transition-all text-left flex items-center gap-1.5"
@@ -359,6 +346,25 @@ export default function Advisor() {
                           Plan Customize Karein
                         </button>
                       </div>
+                    </div>
+                  )}
+
+                  {msg.bundles && msg.bundles.length > 1 && (
+                    <div className="grid gap-2">
+                      <p className="text-xs font-bold text-airtel-charcoal">Compare eligible plans</p>
+                      {msg.bundles.map((bundle) => (
+                        <div key={bundle.tier} className={`rounded-xl border p-3 ${bundle.is_recommended ? 'border-airtel-red bg-airtel-red-light/30' : 'border-airtel-border bg-white'}`}>
+                          <div className="flex items-start justify-between gap-3">
+                            <div>
+                              <p className="text-xs font-bold text-airtel-charcoal">{bundle.title}</p>
+                              <p className="mt-1 text-[11px] text-airtel-slate">
+                                Setup: ₹{bundle.quote.one_time_setup_total.toLocaleString()} once · ~{bundle.quote.typical_activation_days} days
+                              </p>
+                            </div>
+                            <p className="shrink-0 text-sm font-extrabold text-airtel-charcoal">₹{bundle.quote.monthly_total_min.toLocaleString()}/mo</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
