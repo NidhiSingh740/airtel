@@ -1,9 +1,8 @@
-
 // src/components/Benefits.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Clock, FileText, Layers, ArrowUpRight, ShieldCheck, Zap } from 'lucide-react';
+import { Clock, FileText, Layers, Bot } from 'lucide-react';
 
 export default function Benefits() {
   const { t } = useTranslation();
@@ -12,61 +11,49 @@ export default function Benefits() {
   const benefitsList = [
     {
       icon: Clock,
-      title: t('benefits.fasterTitle', '10x Faster Onboarding'),
-      description: t('benefits.fasterDesc', 'Complete business verification, package recommendation, and quote generation in under 5 minutes.'),
-      iconBg: 'bg-blue-500/10 border-blue-500/20 text-blue-400',
+      title: t('benefits.fasterTitle', 'Faster onboarding'),
+      description: t('benefits.fasterDesc', 'From enquiry to quote in under 5 minutes. No waiting for a sales agent to call back.'),
     },
     {
       icon: FileText,
-      title: t('benefits.paperworkTitle', 'Zero Manual Paperwork'),
-      description: t('benefits.paperworkDesc', 'Automated OCR scanning parses Udyam & GST certificates directly, eliminating manual entry errors.'),
-      iconBg: 'bg-cyan-500/10 border-cyan-500/20 text-cyan-400',
+      title: t('benefits.paperworkTitle', 'No manual paperwork'),
+      description: t('benefits.paperworkDesc', 'Documents are verified automatically against Udyam and GST registries. Nothing needs to be physically submitted.'),
     },
     {
       icon: Layers,
-      title: t('benefits.platformTitle', 'One Unified Platform'),
-      description: t('benefits.platformDesc', 'From initial AI consultation to lead management and order tracking—all streamlined in one place.'),
-      iconBg: 'bg-indigo-500/10 border-indigo-500/20 text-indigo-400',
+      title: t('benefits.platformTitle', 'Everything in one place'),
+      description: t('benefits.platformDesc', 'Plan selection, KYC, payment, and installation tracking — managed from a single dashboard.'),
     },
   ];
 
   return (
-    <section id="benefits" className="relative bg-slate-900 text-slate-100 py-20 lg:py-28 border-t border-slate-800 selection:bg-blue-500 selection:text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          
-          {/* Left Column: Benefits Content */}
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold uppercase tracking-widest">
-                <Zap className="w-3.5 h-3.5" />
-                <span>Value Proposition</span>
-              </div>
+    <section id="benefits" className="bg-airtel-surface w-full border-t border-airtel-border">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
 
-              <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
-                {t('benefits.title', 'Designed to Eliminate Friction & Accelerate MSME Scale')}
-              </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
-              <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
-                Traditional enterprise telecom onboarding takes weeks of back-and-forth manual verification. Udyam Digital condenses the journey into an intelligent digital workflow.
-              </p>
-            </div>
+          {/* Left — Benefits list */}
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-airtel-charcoal mb-3">
+              {t('benefits.title', 'Why businesses choose Accel')}
+            </h2>
+            <p className="text-airtel-slate text-base mb-10">
+              Telecom onboarding for small businesses has traditionally been slow and document-heavy. Accel removes that friction entirely.
+            </p>
 
-            {/* Benefit Items */}
             <div className="space-y-6">
               {benefitsList.map((item, index) => {
                 const Icon = item.icon;
                 return (
-                  <div key={index} className="flex items-start gap-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 hover:border-slate-700 transition-colors">
-                    <div className={`w-10 h-10 rounded-xl border flex items-center justify-center shrink-0 mt-0.5 ${item.iconBg}`}>
-                      <Icon className="w-5 h-5" />
+                  <div key={index} className="flex gap-4">
+                    <div className="w-9 h-9 rounded-lg bg-airtel-red-light flex items-center justify-center shrink-0 mt-0.5">
+                      <Icon className="w-4.5 h-4.5 text-airtel-red" />
                     </div>
-                    <div className="space-y-1">
-                      <h3 className="text-base font-bold text-white tracking-tight">
+                    <div>
+                      <h3 className="text-sm font-bold text-airtel-charcoal mb-1">
                         {item.title}
                       </h3>
-                      <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                      <p className="text-sm text-airtel-slate leading-relaxed">
                         {item.description}
                       </p>
                     </div>
@@ -76,48 +63,35 @@ export default function Benefits() {
             </div>
           </div>
 
-          {/* Right Column: Interactive Action Card */}
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/20 to-cyan-400/20 rounded-3xl blur-2xl pointer-events-none -z-10" />
-            
-            <div className="bg-slate-950 border border-slate-800 rounded-3xl p-8 space-y-8 shadow-2xl relative">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-6 h-6 text-emerald-400" />
-                  <span className="text-sm font-bold text-white">DPDP Act 2023 Compliant</span>
-                </div>
-                <span className="px-2.5 py-1 rounded-full text-[11px] font-mono font-medium bg-emerald-950 text-emerald-400 border border-emerald-800">
-                  Secure Pipeline
-                </span>
-              </div>
+          {/* Right — Action panel */}
+          <div className="bg-white border border-airtel-border rounded-lg p-8">
+            <h3 className="text-xl font-bold text-airtel-charcoal mb-2">
+              Get started in 5 minutes
+            </h3>
+            <p className="text-sm text-airtel-slate mb-8 leading-relaxed">
+              Chat with Accel Saathi to find the right plan for your business, or upload your documents directly to begin KYC verification.
+            </p>
 
-              <div className="space-y-3">
-                <h3 className="text-2xl font-bold text-white tracking-tight">
-                  Ready to test the digital verification engine?
-                </h3>
-                <p className="text-sm text-slate-400 leading-relaxed">
-                  Start with the Saathi AI Assistant or jump straight to document validation to verify sample Udyam certificates.
-                </p>
-              </div>
+            <div className="space-y-3">
+              <button
+                onClick={() => navigate('/advisor')}
+                className="w-full flex items-center justify-center gap-2.5 px-6 py-3.5 bg-airtel-red hover:bg-airtel-red-hover text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer min-h-[48px]"
+              >
+                <Bot className="w-4 h-4" />
+                <span>Start with Accel Saathi</span>
+              </button>
 
-              <div className="space-y-3 pt-2">
-                <button
-                  onClick={() => navigate('/advisor')}
-                  className="w-full flex items-center justify-between px-6 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-sm transition-all shadow-lg shadow-blue-500/20 cursor-pointer"
-                >
-                  <span>Launch Saathi AI Advisor</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </button>
-
-                <button
-                  onClick={() => navigate('/kyc')}
-                  className="w-full flex items-center justify-between px-6 py-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold text-sm transition-all border border-slate-700 cursor-pointer"
-                >
-                  <span>Try Digital KYC Upload</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </button>
-              </div>
+              <button
+                onClick={() => navigate('/kyc')}
+                className="w-full flex items-center justify-center px-6 py-3.5 bg-white hover:bg-airtel-surface text-airtel-charcoal font-semibold text-sm rounded-lg border border-airtel-border transition-colors cursor-pointer min-h-[48px]"
+              >
+                Upload KYC Documents
+              </button>
             </div>
+
+            <p className="mt-6 text-xs text-airtel-muted">
+              Your documents are used only for verification and are deleted automatically after 30 days.
+            </p>
           </div>
 
         </div>

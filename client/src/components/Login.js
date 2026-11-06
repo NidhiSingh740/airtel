@@ -1,9 +1,9 @@
-
-// src/pages/Login.jsx
+// src/components/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Eye, EyeOff, ShieldCheck, Mail, Lock, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ChevronLeft } from 'lucide-react';
+import { AirtelIcon } from './AirtelLogo';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -15,176 +15,193 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    // Mimic payload simulation logic
     setTimeout(() => {
       setLoading(false);
-      navigate('/'); // Go back home on verify
+      navigate('/');
     }, 1200);
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col lg:flex-row justify-center items-stretch text-slate-100 font-sans selection:bg-blue-500 selection:text-white">
-      
-      {/* Left Column: Visual Artwork (Desktop hidden mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-slate-900 flex-col justify-between p-12 relative overflow-hidden border-r border-slate-800">
-        <div className="absolute inset-0 bg-gradient-to-tr from-blue-900/40 via-transparent to-cyan-800/20 z-0 pointer-events-none" />
-        
-        {/* Branding Logo */}
-        <Link to="/" className="flex items-center gap-3 z-10 self-start group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-lg">
-            <ShieldCheck className="w-6 h-6 stroke-[2.2]" />
+    <div className="min-h-screen bg-white flex flex-col lg:flex-row justify-center items-stretch text-airtel-charcoal font-sans">
+
+      {/* Left Column — Brand panel */}
+      <div className="hidden lg:flex lg:w-5/12 bg-airtel-red flex-col justify-between p-12 relative overflow-hidden">
+        {/* Subtle diagonal line texture */}
+        <div
+          className="absolute inset-0 opacity-[0.07] pointer-events-none"
+          style={{
+            backgroundImage: 'repeating-linear-gradient(45deg, white 0, white 1px, transparent 0, transparent 50%)',
+            backgroundSize: '12px 12px',
+          }}
+        />
+
+        {/* Logo — links back to home */}
+        <Link to="/" className="flex items-center gap-2.5 z-10 self-start">
+          <div className="w-9 h-9 rounded-lg bg-white flex items-center justify-center shadow-xs">
+            <AirtelIcon className="w-5 h-5" fill="#b22020" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-white">
-            Udyam<span className="text-blue-500">Digital</span>
-          </span>
+          <div className="flex flex-col leading-none">
+            <span className="text-lg font-extrabold tracking-tight text-white">AccelSaathi</span>
+            <span className="text-[9px] font-semibold text-white/80 uppercase tracking-widest">by Airtel Business</span>
+          </div>
         </Link>
 
-        {/* Dynamic Generative Art */}
-        <div className="my-auto z-10 relative flex flex-col items-center">
-          <img 
-            src="/assets/auth-banner.png" 
-            alt="Udyam Digital" 
-            className="w-full max-w-lg object-contain rounded-2xl drop-shadow-2xl mb-8 transform hover:scale-[1.02] transition-transform duration-500"
-            onError={(e) => {
-              // Fallback to illustration if local assets are not present
-              e.target.src = "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600";
-            }}
-          />
-          <div className="text-center space-y-3 px-4">
-            <h3 className="text-2xl font-extrabold text-white leading-tight">Empowering India’s Micro & Small Enterprises</h3>
-            <p className="text-slate-400 text-sm max-w-sm mx-auto leading-relaxed">
-              Automated document verification, instant AI assistance, and premium telecom configuration workflows.
-            </p>
+        {/* Center copy */}
+        <div className="z-10 space-y-5">
+          <h2 className="text-3xl font-extrabold text-white leading-snug">
+            Connecting India's<br />small businesses.
+          </h2>
+          <p className="text-white/70 text-sm leading-relaxed max-w-xs">
+            Fibre, SIMs, cloud services, and digital KYC — all in one place, without visiting a store.
+          </p>
+          <div className="pt-2 space-y-2.5">
+            {[
+              '15 lakh+ businesses onboarded',
+              'No branch visit required',
+              '24×7 support',
+            ].map((item, i) => (
+              <div key={i} className="text-sm text-white/80 flex items-center gap-2">
+                <span className="w-1 h-4 bg-white/40 rounded-full shrink-0" />
+                {item}
+              </div>
+            ))}
           </div>
         </div>
 
-        <span className="text-xs text-slate-500 z-10">© 2026 UdyamDigital. Platform Secured.</span>
+        <span className="text-xs text-white/40 z-10">© 2026 Bharti Airtel Limited.</span>
       </div>
 
-      {/* Right Column: Form Panel */}
-      <div className="flex-grow lg:w-1/2 flex items-center justify-center px-4 py-12 sm:px-6 lg:px-24 bg-slate-950 relative">
-        <div className="absolute top-10 left-10 lg:hidden">
-          <Link to="/" className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm">
-            <ArrowLeft className="w-4 h-4" /> Go Back
+      {/* Right Column — Form */}
+      <div className="flex-grow lg:w-7/12 flex flex-col bg-white">
+
+        {/* Back to Home — always visible, top of form panel */}
+        <div className="px-6 pt-6 lg:px-12 lg:pt-8">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-sm text-airtel-slate hover:text-airtel-charcoal transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Back to Home
           </Link>
         </div>
 
-        <div className="max-w-md w-full space-y-8 relative">
-          
-          {/* Header */}
-          <div className="text-center lg:text-left space-y-2.5">
-            <div className="inline-flex items-center justify-center lg:justify-start gap-2.5 lg:hidden mb-2">
-              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-                <ShieldCheck className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-bold text-lg text-white">UdyamDigital</span>
-            </div>
-            
-            <h2 className="text-3xl font-extrabold text-white tracking-tight">
-              {t('login.title', 'Welcome back')}
-            </h2>
-            <p className="text-slate-400 text-sm">
-              Please enter your details to access your dashboard.
-            </p>
-          </div>
+        {/* Form centered in remaining space */}
+        <div className="flex-1 flex items-center justify-center px-6 py-10 lg:px-12">
+          <div className="w-full max-w-sm space-y-6">
 
-          <form onSubmit={handleSubmit} className="space-y-6 mt-8">
-            
-            {/* Email Field */}
-            <div className="space-y-1.5">
-              <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                Email Address
-              </label>
-              <div className="relative rounded-xl shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                  <Mail className="h-5 w-5" />
-                </div>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  placeholder="name@business.com"
-                  className="block w-full pl-11 pr-4 py-3 bg-slate-900 border border-slate-850 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm placeholder:text-slate-600 transition-all text-white focus:outline-hidden"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                />
+            {/* Mobile logo */}
+            <div className="flex items-center gap-2.5 lg:hidden mb-2">
+              <div className="w-8 h-8 rounded-lg bg-airtel-red-light border border-airtel-red/10 flex items-center justify-center shadow-xs">
+                <AirtelIcon className="w-4.5 h-4.5" fill="#b22020" />
+              </div>
+              <div className="flex flex-col leading-none">
+                <span className="font-extrabold text-base text-airtel-charcoal">AccelSaathi</span>
+                <span className="text-[8px] font-bold text-airtel-slate uppercase tracking-widest">by Airtel Business</span>
               </div>
             </div>
 
-            {/* Password Field */}
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                  Password
+            <div>
+              <h1 className="text-2xl font-bold text-airtel-charcoal">
+                {t('login.title', 'Sign in')}
+              </h1>
+              <p className="mt-1 text-sm text-airtel-slate">
+                Enter your registered email and password.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+
+              {/* Email */}
+              <div className="space-y-1.5">
+                <label htmlFor="email" className="block text-xs font-semibold text-airtel-charcoal uppercase tracking-wider">
+                  Email
                 </label>
-                <Link to="/forgot" className="text-xs font-semibold text-blue-400 hover:text-blue-300">
-                  Forgot password?
-                </Link>
-              </div>
-              <div className="relative rounded-xl shadow-xs">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-                  <Lock className="h-5 w-5" />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail className="h-4 w-4 text-airtel-muted" />
+                  </div>
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    placeholder="name@business.com"
+                    className="block w-full pl-10 pr-4 py-2.5 bg-white border border-airtel-border rounded-lg focus:border-airtel-red focus:ring-1 focus:ring-airtel-red text-sm placeholder:text-airtel-muted text-airtel-charcoal focus:outline-none transition-colors"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  />
                 </div>
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  placeholder="••••••••••••"
-                  className="block w-full pl-11 pr-11 py-3 bg-slate-900 border border-slate-850 rounded-xl focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm placeholder:text-slate-600 transition-all text-white focus:outline-hidden"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500 hover:text-white"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </button>
               </div>
-            </div>
 
-            {/* Remember & Options */}
-            <div className="flex items-center justify-between">
-              <label className="relative flex items-center gap-2 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  className="sr-only peer"
-                  checked={formData.rememberMe}
-                  onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
-                />
-                <div className="w-5 h-5 bg-slate-900 rounded border border-slate-800 flex items-center justify-center peer-checked:bg-blue-600 peer-checked:border-blue-500 transition-colors">
-                  {formData.rememberMe && <div className="w-1.5 h-1.5 bg-white rounded-full" />}
+              {/* Password */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="block text-xs font-semibold text-airtel-charcoal uppercase tracking-wider">
+                    Password
+                  </label>
+                  <Link to="/forgot" className="text-xs text-airtel-red hover:text-airtel-red-hover font-medium">
+                    Forgot password?
+                  </Link>
                 </div>
-                <span className="text-xs text-slate-400 font-medium">Remember me</span>
-              </label>
-            </div>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Lock className="h-4 w-4 text-airtel-muted" />
+                  </div>
+                  <input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    placeholder="••••••••"
+                    className="block w-full pl-10 pr-10 py-2.5 bg-white border border-airtel-border rounded-lg focus:border-airtel-red focus:ring-1 focus:ring-airtel-red text-sm placeholder:text-airtel-muted text-airtel-charcoal focus:outline-none transition-colors"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-airtel-muted hover:text-airtel-charcoal"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-md transition-all active:scale-98 cursor-pointer disabled:opacity-50"
-            >
-              {loading ? (
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  <span>Sign In to Dashboard</span>
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-          </form>
+              {/* Remember me */}
+              <div className="flex items-center gap-2">
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    checked={formData.rememberMe}
+                    onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
+                  />
+                  <div className="w-4 h-4 bg-white rounded border border-airtel-border flex items-center justify-center peer-checked:bg-airtel-red peer-checked:border-airtel-red transition-colors">
+                    {formData.rememberMe && <div className="w-1.5 h-1.5 bg-white rounded-sm" />}
+                  </div>
+                  <span className="text-xs text-airtel-slate">Keep me signed in</span>
+                </label>
+              </div>
 
-          {/* Prompt footer */}
-          <p className="text-center text-sm text-slate-400">
-            Don’t have an account?{' '}
-            <Link to="/signup" className="font-semibold text-blue-400 hover:text-blue-300 ml-1">
-              Create an account
-            </Link>
-          </p>
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center py-2.5 px-4 bg-airtel-red hover:bg-airtel-red-hover text-white font-semibold text-sm rounded-lg transition-colors cursor-pointer disabled:opacity-60 min-h-[44px]"
+              >
+                {loading
+                  ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  : 'Sign In'
+                }
+              </button>
+            </form>
 
+            <p className="text-center text-sm text-airtel-slate">
+              New to Accel?{' '}
+              <Link to="/signup" className="font-semibold text-airtel-red hover:text-airtel-red-hover">
+                Create an account
+              </Link>
+            </p>
+
+          </div>
         </div>
       </div>
     </div>

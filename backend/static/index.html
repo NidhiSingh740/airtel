@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accel Saathi — Full Feature Testing Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accel: {
+              red: '#ED1C24',
+              hover: '#D41920',
+              light: '#FEE8E9',
+              dark: '#991B1B'
+            },
+            chat: {
+              bg: '#ECE5DD',
+              user: '#DCF8C6',
+              bot: '#FFFFFF'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', 'Noto Sans Devanagari', sans-serif; }
+    /* Custom scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- Header with Airtel/Accel Brand Identity -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-accel-red flex items-center justify-center text-white font-black text-xl tracking-tighter">
+          a
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-bold text-lg text-gray-900">Accel Saathi</span>
+            <span class="bg-accel-light text-accel-red text-xs px-2 py-0.5 rounded-full font-semibold">B2B Udyam Digital</span>
+          </div>
+          <p class="text-xs text-gray-500">Aapka Digital Business Companion • Backend Testing Suite</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-1 text-xs text-green-700 bg-green-50 px-2.5 py-1 rounded-full border border-green-200 font-medium">
+          <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+          <span>FastAPI Engine Online</span>
+        </div>
+        <select id="globalLang" onchange="switchLanguage(this.value)" class="text-sm bg-gray-50 border border-gray-300 rounded-lg px-2.5 py-1.5 font-medium focus:ring-accel-red focus:border-accel-red">
+          <option value="hi" selected>हिन्दी (Hindi)</option>
+          <option value="en">English</option>
+          <option value="mr">मराठी (Marathi)</option>
+          <option value="ta">தமிழ் (Tamil)</option>
+          <option value="te">తెలుగు (Telugu)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-gray-50 border-t border-gray-200 px-4">
+      <div class="max-w-7xl mx-auto flex space-x-2 overflow-x-auto py-2">
+        <button onclick="showTab('tab-chat')" id="btn-tab-chat" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-white bg-accel-red">
+          💬 Saathi Advisor Chat
+        </button>
+        <button onclick="showTab('tab-quote')" id="btn-tab-quote" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-200">
+          📋 Interactive Quote & Bundle Engine
+        </button>
+        <button onclick="showTab('tab-kyc')" id="btn-tab-kyc" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-200">
+          🛡️ Smart KYC & Defect Verifier
+        </button>
+        <button onclick="showTab('tab-registry')" id="btn-tab-registry" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-200">
+          🔍 Live GSTIN & Udyam Registry API
+        </button>
+        <button onclick="showTab('tab-analytics')" id="btn-tab-analytics" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-200">
+          📊 Funnel & Hot Lead Propensity
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
+
+    <!-- ==================== TAB 1: WHATSAPP-STYLE SAATHI CHAT ==================== -->
+    <section id="tab-chat" class="tab-pane block">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left: WhatsApp Simulation Container -->
+        <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-[700px]">
+          
+          <!-- Chat Header -->
+          <div class="bg-emerald-700 text-white px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="relative">
+                <div class="w-10 h-10 rounded-full bg-white text-accel-red font-bold flex items-center justify-center text-lg shadow-sm">
+                  a
+                </div>
+                <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border-2 border-emerald-700 rounded-full"></span>
+              </div>
+              <div>
+                <h3 class="font-bold text-sm tracking-wide">Accel Saathi (आपूर्ति एवं प्लान साथी)</h3>
+                <p class="text-xs text-emerald-100">सक्रिय • 24x7 Digital Assistant</p>
+              </div>
+            </div>
+            <div class="text-xs bg-emerald-800 text-emerald-100 px-2 py-1 rounded">
+              DPDP Consent Verified ✓
+            </div>
+          </div>
+
+          <!-- Chat Messages Area -->
+          <div id="chatMessages" class="flex-1 bg-chat-bg p-4 overflow-y-auto space-y-3">
+            <!-- Messages populated dynamically -->
+          </div>
+
+          <!-- Quick Replies Drawer -->
+          <div id="quickRepliesContainer" class="bg-white/90 border-t border-gray-200 p-2 flex flex-wrap gap-2">
+            <!-- Chips -->
+          </div>
+
+          <!-- Input Bar -->
+          <div class="bg-gray-100 p-3 border-t border-gray-200 flex items-center space-x-2">
+            <input type="text" id="chatInput" placeholder="यहाँ लिखें / Type your requirement here..." 
+                   onkeydown="if(event.key==='Enter') sendMessage()"
+                   class="flex-1 bg-white border border-gray-300 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:border-accel-red shadow-inner">
+            <button onclick="sendMessage()" class="bg-accel-red hover:bg-accel-hover text-white px-5 py-2.5 rounded-full font-semibold text-sm shadow-sm transition">
+              भेजें
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Diagnostic Debug State -->
+        <div class="space-y-4">
+          <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+            <h4 class="font-bold text-gray-900 text-sm mb-3 flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-accel-red"></span>
+              <span>Live Conversation Session Context</span>
+            </h4>
+            <pre id="advisorStateDebug" class="bg-gray-900 text-green-400 p-3 rounded-lg text-xs font-mono overflow-auto max-h-56">{}</pre>
+            <div class="mt-4 pt-3 border-t border-gray-100 text-xs text-gray-500 space-y-1">
+              <p>• <strong>State Machine</strong>: Tracks business size, GSTIN status, and telecom spend.</p>
+              <p>• <strong>No Hard-Selling</strong>: Recommends proven bundles from 5,000 empirical leads.</p>
+            </div>
+          </div>
+
+          <div class="bg-red-50 rounded-xl p-5 border border-red-100">
+            <h5 class="text-xs font-bold text-accel-red uppercase tracking-wider mb-2">Indian Shopkeeper UX Principles</h5>
+            <ul class="text-xs text-gray-700 space-y-1.5 list-disc pl-4">
+              <li><strong>Zero Jargon</strong>: "Broadband", "POS" and "CCTV" explained simply.</li>
+              <li><strong>Show Savings First</strong>: Shop owners immediately compare against existing spend.</li>
+              <li><strong>Multi-lingual Tone</strong>: Culturally polite, WhatsApp-like messaging.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: QUOTE & BUNDLE BUILDER ==================== -->
+    <section id="tab-quote" class="tab-pane hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left 2 Cols: Product Catalog & Toggles -->
+        <div class="lg:col-span-2 bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h2 class="text-lg font-bold text-gray-900">Custom Business Bundle Builder</h2>
+              <p class="text-xs text-gray-500">Pick connectivity, cloud, security, and hardware with automated dependency validation.</p>
+            </div>
+            <button onclick="loadEligibleProducts()" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg font-semibold text-gray-700">
+              रिफ्रेश कैटलॉग (Refresh)
+            </button>
+          </div>
+
+          <!-- Filter Toolbar -->
+          <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 flex flex-wrap gap-4 text-xs font-medium mb-4">
+            <label class="flex items-center space-x-1">
+              <span>City Tier:</span>
+              <select id="filterTier" onchange="loadEligibleProducts()" class="bg-white border rounded px-2 py-1">
+                <option value="1">Tier 1 (Metro)</option>
+                <option value="2" selected>Tier 2 (Emerging)</option>
+              </select>
+            </label>
+            <label class="flex items-center space-x-1">
+              <span>Staff / Employees:</span>
+              <input type="number" id="filterEmp" value="3" min="1" max="200" onchange="loadEligibleProducts()" class="w-14 bg-white border rounded px-2 py-1">
+            </label>
+            <label class="flex items-center space-x-1">
+              <span>Sites:</span>
+              <input type="number" id="filterSites" value="1" min="1" max="25" onchange="loadEligibleProducts()" class="w-14 bg-white border rounded px-2 py-1">
+            </label>
+            <label class="flex items-center space-x-1">
+              <input type="checkbox" id="filterGST" checked onchange="loadEligibleProducts()" class="rounded text-accel-red">
+              <span>Has Active GSTIN</span>
+            </label>
+          </div>
+
+          <!-- Products List -->
+          <div id="productsCatalogContainer" class="space-y-2 max-h-[500px] overflow-y-auto pr-1">
+            <p class="text-xs text-gray-400">Loading Accel Business products...</p>
+          </div>
+        </div>
+
+        <!-- Right Col: Live Transparent Quote Summary -->
+        <div class="space-y-4">
+          <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm sticky top-24">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+              <span class="text-xs font-bold text-gray-500 uppercase">Live Pricing</span>
+              <span id="bundleValidationBadge" class="text-xs font-bold px-2 py-0.5 rounded bg-green-100 text-green-800">Valid Bundle ✓</span>
+            </div>
+
+            <!-- Price Breakdown -->
+            <div class="py-4">
+              <div class="text-3xl font-extrabold text-gray-900 tracking-tight" id="quoteMonthlyTotal">
+                ₹0 <span class="text-sm font-normal text-gray-500">/mahina</span>
+              </div>
+              <p class="text-xs text-gray-500 mt-0.5">सब मिलाकर पारदर्शी शुल्क (Inclusive of Base SLAs)</p>
+
+              <div class="mt-4 space-y-2 text-xs">
+                <div class="flex justify-between py-1 border-b border-gray-100">
+                  <span class="text-gray-600">One-Time Setup Fee:</span>
+                  <span class="font-semibold text-gray-800" id="quoteSetupTotal">₹0</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-100">
+                  <span class="text-gray-600">Expected Activation Time:</span>
+                  <span class="font-semibold text-emerald-700" id="quoteInstallDays">~3 Days</span>
+                </div>
+                <div class="flex justify-between py-1 bg-emerald-50 px-2 rounded text-emerald-900 font-medium">
+                  <span>Estimated Monthly Savings:</span>
+                  <span class="font-bold" id="quoteSavings">₹0</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dependency Warning Banner -->
+            <div id="dependencyWarningBox" class="hidden bg-amber-50 border border-amber-200 text-amber-900 p-3 rounded-lg text-xs space-y-1 mb-4">
+              <span class="font-bold block">⚠️ Dependency Constraint</span>
+              <p id="dependencyWarningText"></p>
+            </div>
+
+            <button onclick="transferQuoteToKYC()" class="w-full bg-accel-red hover:bg-accel-hover text-white py-3 rounded-xl font-bold text-sm shadow-sm transition">
+              दस्तावेज़ वेरिफ़िकेशन पर जाएँ (Proceed to KYC)
+            </button>
+            <p class="text-center text-[11px] text-gray-400 mt-2">🔒 DPDP 2023 Digital Protection Standard</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: SMART KYC & SPECIMEN DEFECT VERIFIER ==================== -->
+    <section id="tab-kyc" class="tab-pane hidden">
+      <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm mb-6">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-gray-200 mb-6 gap-4">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900">Smart KYC & Document Defect Verifier</h2>
+            <p class="text-xs text-gray-500">Automated OCR Extraction + Live Registry Validation. Detects expired address proofs (>90 days), cancelled GST, and mismatched names.</p>
+          </div>
+
+          <!-- Specimen Quick Runner -->
+          <div class="flex items-center space-x-2 bg-gray-50 p-2 rounded-lg border border-gray-200">
+            <span class="text-xs font-semibold text-gray-700">Test Specimen:</span>
+            <select id="specimenSelector" class="text-xs bg-white border border-gray-300 rounded px-2 py-1 font-semibold">
+              <option value="K01">K01 — Vindhya Tours (Valid)</option>
+              <option value="K02">K02 — Harmony Dental (Valid)</option>
+              <option value="K03">K03 — Ganesh Woodcraft (Valid)</option>
+              <option value="K04">K04 — Test Case</option>
+              <option value="K05">K05 — Test Case</option>
+              <option value="K06">K06 — Test Case</option>
+              <option value="K07">K07 — Test Case</option>
+              <option value="K08">K08 — Test Case</option>
+              <option value="K09">K09 — Test Case</option>
+              <option value="K10">K10 — Test Case</option>
+              <option value="K11">K11 — Expired Utility Bill (>250d)</option>
+              <option value="K12">K12 — Test Case</option>
+            </select>
+            <button onclick="runSpecimenTest()" id="btnRunSpecimen" class="text-xs bg-accel-red text-white px-3 py-1.5 rounded font-bold hover:bg-accel-hover">
+              जाँचें (Verify Specimen)
+            </button>
+          </div>
+        </div>
+
+        <!-- Verification Results Dashboard -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Column 1: Document Checklist & OCR Preview -->
+          <div class="space-y-4">
+            <h3 class="text-xs font-bold uppercase text-gray-500 tracking-wider">Document Checklist (OCR)</h3>
+            
+            <div id="kycDocCards" class="space-y-2">
+              <div class="p-3 bg-gray-50 border rounded-lg text-xs flex justify-between items-center">
+                <span>📄 GST Registration Certificate</span>
+                <span id="badgeGstDoc" class="text-gray-400">Not Scanned</span>
+              </div>
+              <div class="p-3 bg-gray-50 border rounded-lg text-xs flex justify-between items-center">
+                <span>📄 Udyam Certificate</span>
+                <span id="badgeUdyamDoc" class="text-gray-400">Not Scanned</span>
+              </div>
+              <div class="p-3 bg-gray-50 border rounded-lg text-xs flex justify-between items-center">
+                <span>📄 Authorised Signatory ID</span>
+                <span id="badgeSigDoc" class="text-gray-400">Not Scanned</span>
+              </div>
+              <div class="p-3 bg-gray-50 border rounded-lg text-xs flex justify-between items-center">
+                <span>📄 Address Proof (Utility Bill)</span>
+                <span id="badgeAddrDoc" class="text-gray-400">Not Scanned</span>
+              </div>
+            </div>
+
+            <!-- Custom Document Upload Form -->
+            <div class="mt-4 pt-4 border-t border-gray-100">
+              <h4 class="text-xs font-semibold text-gray-700 mb-2">Upload Custom Document for OCR</h4>
+              <input type="file" id="customKycFile" class="text-xs text-gray-500 w-full mb-2">
+              <select id="customDocType" class="text-xs border rounded px-2 py-1 w-full mb-2">
+                <option value="GST_CERTIFICATE">GST Certificate</option>
+                <option value="UDYAM_CERTIFICATE">Udyam Registration</option>
+                <option value="SIGNATORY_ID">Signatory ID (Aadhaar/PAN)</option>
+                <option value="ADDRESS_PROOF">Address Proof (Electricity Bill)</option>
+              </select>
+              <button onclick="uploadCustomKyc()" class="w-full text-xs bg-gray-900 text-white py-2 rounded font-semibold hover:bg-black">
+                OCR अपलोड व विश्लेषण
+              </button>
+            </div>
+          </div>
+
+          <!-- Column 2 & 3: Deep Verification Rules Engine Output -->
+          <div class="lg:col-span-2 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs font-bold uppercase text-gray-500 tracking-wider">Automated Compliance & Defect Checks</h3>
+              <div id="overallKYCStatus" class="text-xs font-bold px-2.5 py-1 rounded bg-gray-100 text-gray-600">
+                Awaiting Verification
+              </div>
+            </div>
+
+            <div id="kycChecksContainer" class="space-y-2">
+              <div class="p-6 text-center text-xs text-gray-400 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                Select a specimen (K01-K12) or upload documents to run automated cross-verification checks.
+              </div>
+            </div>
+
+            <!-- Remediation Box -->
+            <div id="remediationBox" class="hidden bg-red-50 border border-red-200 p-4 rounded-xl">
+              <h4 class="text-xs font-bold text-red-800 mb-1">आवश्यक सुधार (Action Required for Customer)</h4>
+              <ul id="remediationList" class="text-xs text-red-700 space-y-1 list-disc pl-4"></ul>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: LIVE GSTIN & UDYAM REGISTRY LOOKUP ==================== -->
+    <section id="tab-registry" class="tab-pane hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- GSTIN Lookup Box -->
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="flex items-center space-x-2 mb-4">
+            <span class="w-8 h-8 rounded bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-xs">GST</span>
+            <div>
+              <h3 class="font-bold text-sm text-gray-900">GSTIN Live Registry Lookup</h3>
+              <p class="text-xs text-gray-500">Backing data: 3,534 enterprise records (Active / Suspended / Cancelled)</p>
+            </div>
+          </div>
+
+          <div class="flex space-x-2 mb-4">
+            <input type="text" id="inputGSTIN" value="32TTNXB7384T1ZW" placeholder="e.g. 32TTNXB7384T1ZW" 
+                   class="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-2 font-mono uppercase focus:ring-accel-red focus:border-accel-red">
+            <button onclick="queryGSTIN()" class="bg-gray-900 hover:bg-black text-white text-xs px-4 py-2 rounded-lg font-semibold">
+              Search
+            </button>
+          </div>
+
+          <div id="gstinResultArea" class="bg-gray-50 rounded-lg p-3 border border-gray-200 text-xs font-mono min-h-[200px] overflow-auto">
+            Ready to query GSTIN registry.
+          </div>
+        </div>
+
+        <!-- Udyam Lookup Box -->
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="flex items-center space-x-2 mb-4">
+            <span class="w-8 h-8 rounded bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-xs">MSME</span>
+            <div>
+              <h3 class="font-bold text-sm text-gray-900">Udyam Registration Lookup</h3>
+              <p class="text-xs text-gray-500">Backing data: 2,723 MSME enterprises</p>
+            </div>
+          </div>
+
+          <div class="flex space-x-2 mb-4">
+            <input type="text" id="inputUdyam" value="UDYAM-KL-00-3078801" placeholder="e.g. UDYAM-KL-00-3078801" 
+                   class="flex-1 text-sm border border-gray-300 rounded-lg px-3 py-2 font-mono uppercase focus:ring-accel-red focus:border-accel-red">
+            <button onclick="queryUdyam()" class="bg-gray-900 hover:bg-black text-white text-xs px-4 py-2 rounded-lg font-semibold">
+              Search
+            </button>
+          </div>
+
+          <div id="udyamResultArea" class="bg-gray-50 rounded-lg p-3 border border-gray-200 text-xs font-mono min-h-[200px] overflow-auto">
+            Ready to query Udyam registry.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: FUNNEL ANALYTICS & PROPENSITY SCORING ==================== -->
+    <section id="tab-analytics" class="tab-pane hidden">
+      <div class="space-y-6">
+        
+        <!-- Metric Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+            <p class="text-xs text-gray-500 font-semibold uppercase">Total SMB Leads</p>
+            <p class="text-2xl font-bold text-gray-900 mt-1">5,000</p>
+            <span class="text-[11px] text-gray-400">Apr–Jun 2026 Quarter</span>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+            <p class="text-xs text-gray-500 font-semibold uppercase">End-to-End Activation</p>
+            <p class="text-2xl font-bold text-accel-red mt-1">7.4% (368)</p>
+            <span class="text-[11px] text-red-500">Current manual funnel</span>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+            <p class="text-xs text-gray-500 font-semibold uppercase">GSTIN Conversion Delta</p>
+            <p class="text-2xl font-bold text-emerald-600 mt-1">9.6% vs 2.0%</p>
+            <span class="text-[11px] text-emerald-700">Nearly 5x with valid GST</span>
+          </div>
+          <div class="bg-white rounded-xl p-4 border border-gray-200 shadow-sm">
+            <p class="text-xs text-gray-500 font-semibold uppercase">Blended CAC</p>
+            <p class="text-2xl font-bold text-gray-900 mt-1">₹15,000</p>
+            <span class="text-[11px] text-gray-400">Target with Saathi: ₹3,000</span>
+          </div>
+        </div>
+
+        <!-- Funnel Waterfall Visual -->
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <h3 class="text-sm font-bold text-gray-900 mb-4">Empirical Sales Funnel Waterfall (smb_leads.csv)</h3>
+          
+          <div class="space-y-3" id="funnelWaterfallBars">
+            <!-- Populated via script -->
+          </div>
+        </div>
+
+        <!-- Propensity Scored Hot Leads Table -->
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-bold text-gray-900">AI Propensity Scored Recoverable Dropped Leads</h3>
+              <p class="text-xs text-gray-500">ML Scoring model targeting high-value dropped leads with immediate re-engagement value.</p>
+            </div>
+            <button onclick="loadHotLeads()" class="text-xs bg-accel-red text-white px-3 py-1.5 rounded-lg font-bold hover:bg-accel-hover">
+              Reload Top Leads
+            </button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-xs text-left">
+              <thead class="bg-gray-50 text-gray-600 font-semibold uppercase border-b">
+                <tr>
+                  <th class="py-2.5 px-3">Score</th>
+                  <th class="py-2.5 px-3">Lead ID</th>
+                  <th class="py-2.5 px-3">Business Name</th>
+                  <th class="py-2.5 px-3">Segment</th>
+                  <th class="py-2.5 px-3">Drop Reason</th>
+                  <th class="py-2.5 px-3">City</th>
+                  <th class="py-2.5 px-3">Recommended Saathi Action</th>
+                </tr>
+              </thead>
+              <tbody id="hotLeadsTableBody" class="divide-y divide-gray-100">
+                <tr><td colspan="7" class="py-4 text-center text-gray-400">Click Reload Top Leads to query scored database...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="bg-white border-t border-gray-200 py-3 text-center text-xs text-gray-500">
+    Accel Saathi Prototype • Built for Enterprise Track A (Project Udyam Digital) • DPDP Act 2023 Compliant Architecture
+  </footer>
+
+  <!-- Core Javascript Implementation -->
+  <script>
+    let currentChatState = { step: 0 };
+    let currentLanguage = 'hi';
+    let loadedProducts = [];
+    let selectedCart = {};
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('block'));
+      document.getElementById(tabId).classList.remove('hidden');
+      document.getElementById(tabId).classList.add('block');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-accel-red', 'text-white');
+        btn.classList.add('text-gray-700');
+      });
+      document.getElementById('btn-' + tabId).classList.add('bg-accel-red', 'text-white');
+      document.getElementById('btn-' + tabId).classList.remove('text-gray-700');
+
+      if (tabId === 'tab-quote' && loadedProducts.length === 0) loadEligibleProducts();
+      if (tabId === 'tab-analytics') loadFunnelAndWaterfall();
+    }
+
+    function switchLanguage(lang) {
+      currentLanguage = lang;
+      currentChatState = { step: 0 };
+      document.getElementById('chatMessages').innerHTML = '';
+      sendAdvisorStep("");
+    }
+
+    // ----------------- Chat Logic -----------------
+    async function sendAdvisorStep(msg) {
+      const container = document.getElementById('chatMessages');
+      if (msg) {
+        container.innerHTML += `
+          <div class="flex justify-end">
+            <div class="bg-chat-user text-gray-900 rounded-t-2xl rounded-bl-2xl p-3 text-xs shadow-sm max-w-[80%]">
+              ${msg}
+              <div class="text-[10px] text-gray-500 text-right mt-1">Just now ✓✓</div>
+            </div>
+          </div>
+        `;
+        container.scrollTop = container.scrollHeight;
+      }
+
+      try {
+        const resp = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg, language: currentLanguage, state: currentChatState })
+        });
+        const data = await resp.json();
+        currentChatState = data.state;
+        document.getElementById('advisorStateDebug').innerText = JSON.stringify(currentChatState, null, 2);
+
+        // Render Bot Message
+        container.innerHTML += `
+          <div class="flex justify-start">
+            <div class="bg-chat-bot border border-gray-100 text-gray-900 rounded-t-2xl rounded-br-2xl p-3 text-xs shadow-sm max-w-[85%] whitespace-pre-line leading-relaxed">
+              ${data.reply}
+              <div class="text-[10px] text-gray-400 mt-1">Accel Saathi • Just now</div>
+            </div>
+          </div>
+        `;
+
+        // Render Recommendation Card if generated
+        if (data.recommended_bundle) {
+          const b = data.recommended_bundle;
+          const q = b.quote;
+          container.innerHTML += `
+            <div class="flex justify-start my-2">
+              <div class="bg-white border-2 border-accel-red rounded-xl p-4 text-xs shadow-md max-w-[90%] w-full">
+                <div class="flex justify-between items-start mb-2">
+                  <span class="bg-accel-light text-accel-red px-2 py-0.5 rounded font-bold uppercase text-[10px]">सुझाया गया प्लान</span>
+                  <span class="text-emerald-700 font-bold">बचत: ₹${q.estimated_monthly_savings}/माह</span>
+                </div>
+                <h4 class="font-extrabold text-sm text-gray-900 mb-1">${b.title}</h4>
+                <div class="text-xl font-black text-accel-red mb-3">₹${q.monthly_total_min} <span class="text-xs font-normal text-gray-600">/mahina</span></div>
+                
+                <div class="space-y-1 mb-3 bg-gray-50 p-2 rounded border border-gray-100">
+                  ${q.items.map(it => `
+                    <div class="flex justify-between text-[11px]">
+                      <span>${it.product_name} (${it.quantity}x)</span>
+                      <span class="font-semibold">₹${it.price_min_total}</span>
+                    </div>
+                  `).join('')}
+                </div>
+
+                <button onclick="applyBundleToQuote('${b.tier}')" class="w-full bg-accel-red text-white py-2 rounded-lg font-bold text-xs hover:bg-accel-hover">
+                  यह प्लान चुनें व कस्टमाइज़ करें (Select Plan)
+                </button>
+              </div>
+            </div>
+          `;
+        }
+
+        // Render Quick Replies
+        const qrContainer = document.getElementById('quickRepliesContainer');
+        qrContainer.innerHTML = '';
+        if (data.quick_replies) {
+          data.quick_replies.forEach(qr => {
+            qrContainer.innerHTML += `
+              <button onclick="sendAdvisorStep('${qr}')" class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs px-3 py-1.5 rounded-full font-medium transition border border-gray-300">
+                ${qr}
+              </button>
+            `;
+          });
+        }
+        container.scrollTop = container.scrollHeight;
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function sendMessage() {
+      const inp = document.getElementById('chatInput');
+      const val = inp.value.trim();
+      if (!val) return;
+      inp.value = '';
+      sendAdvisorStep(val);
+    }
+
+    // ----------------- Quote & Catalog Logic -----------------
+    async function loadEligibleProducts() {
+      const tier = document.getElementById('filterTier').value;
+      const emp = document.getElementById('filterEmp').value;
+      const sites = document.getElementById('filterSites').value;
+      const gst = document.getElementById('filterGST').checked;
+
+      const resp = await fetch(`/api/products?city_tier=${tier}&employee_count=${emp}&num_sites=${sites}&has_gstin=${gst}`);
+      loadedProducts = await resp.json();
+      renderProductCatalog();
+      recalcQuote();
+    }
+
+    function renderProductCatalog() {
+      const container = document.getElementById('productsCatalogContainer');
+      container.innerHTML = '';
+
+      loadedProducts.forEach(p => {
+        const qty = selectedCart[p.product_id] || 0;
+        container.innerHTML += `
+          <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-between text-xs">
+            <div class="flex-1 pr-3">
+              <div class="flex items-center space-x-2">
+                <span class="font-bold text-gray-900">${p.product_name}</span>
+                <span class="text-[10px] bg-gray-200 text-gray-700 px-1.5 py-0.5 rounded">${p.category}</span>
+                ${p.requires_gstin ? '<span class="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded">GST Required</span>' : ''}
+              </div>
+              <p class="text-gray-500 mt-0.5">${p.description}</p>
+              <div class="text-[11px] text-gray-600 mt-1">
+                ₹${p.price_min} - ₹${p.price_max}/${p.unit} • Setup: ₹${p.setup_fee} • ~${p.typical_install_days} days
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button onclick="adjustQty('${p.product_id}', -1)" class="w-7 h-7 bg-white border rounded font-bold text-gray-700 hover:bg-gray-100">-</button>
+              <span class="w-6 text-center font-bold">${qty}</span>
+              <button onclick="adjustQty('${p.product_id}', 1)" class="w-7 h-7 bg-accel-red text-white rounded font-bold hover:bg-accel-hover">+</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function adjustQty(pid, delta) {
+      const cur = selectedCart[pid] || 0;
+      const next = Math.max(0, cur + delta);
+      if (next === 0) delete selectedCart[pid];
+      else selectedCart[pid] = next;
+      renderProductCatalog();
+      recalcQuote();
+    }
+
+    async function recalcQuote() {
+      const items = Object.entries(selectedCart).map(([pid, qty]) => ({ product_id: pid, quantity: qty }));
+      const resp = await fetch('/api/quote/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: items, current_spend: 3500 })
+      });
+      const q = await resp.json();
+
+      document.getElementById('quoteMonthlyTotal').innerHTML = `₹${q.monthly_total_min.toLocaleString()} <span class="text-sm font-normal text-gray-500">/mahina</span>`;
+      document.getElementById('quoteSetupTotal').innerText = `₹${q.one_time_setup_total.toLocaleString()}`;
+      document.getElementById('quoteInstallDays').innerText = `~${q.typical_activation_days} Days`;
+      document.getElementById('quoteSavings').innerText = `₹${q.estimated_monthly_savings.toLocaleString()}/mo`;
+
+      const depBox = document.getElementById('dependencyWarningBox');
+      const badge = document.getElementById('bundleValidationBadge');
+      if (!q.valid_bundle) {
+        depBox.classList.remove('hidden');
+        badge.className = "text-xs font-bold px-2 py-0.5 rounded bg-red-100 text-red-800";
+        badge.innerText = "Missing Dependency ⚠️";
+        document.getElementById('dependencyWarningText').innerText = q.missing_dependencies.map(d => `${d.product_name} requires one of: ${d.requires_one_of.join(', ')}`).join(' | ');
+      } else {
+        depBox.classList.add('hidden');
+        badge.className = "text-xs font-bold px-2 py-0.5 rounded bg-green-100 text-green-800";
+        badge.innerText = "Valid Bundle ✓";
+      }
+    }
+
+    function applyBundleToQuote(tier) {
+      showTab('tab-quote');
+      // Default to standard Dukaan bundle
+      selectedCart = { "P01": 1, "P07": 2, "P19": 1 };
+      renderProductCatalog();
+      recalcQuote();
+    }
+
+    function transferQuoteToKYC() {
+      showTab('tab-kyc');
+    }
+
+    // ----------------- Smart KYC & Specimen Testing -----------------
+    async function runSpecimenTest() {
+      const applicant = document.getElementById('specimenSelector').value;
+      const btn = document.getElementById('btnRunSpecimen');
+      btn.innerText = 'Scanning OCR...';
+      btn.disabled = true;
+
+      try {
+        const resp = await fetch(`/api/kyc/test-applicant/${applicant}`);
+        const data = await resp.json();
+        renderKYCResults(data);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        btn.innerText = 'जाँचें (Verify Specimen)';
+        btn.disabled = false;
+      }
+    }
+
+    function renderKYCResults(data) {
+      const res = data.validation_result;
+      const statusBadge = document.getElementById('overallKYCStatus');
+      if (res.approved) {
+        statusBadge.className = "text-xs font-bold px-2.5 py-1 rounded bg-green-100 text-green-800";
+        statusBadge.innerText = "KYC APPROVED ✓";
+      } else {
+        statusBadge.className = "text-xs font-bold px-2.5 py-1 rounded bg-red-100 text-red-800";
+        statusBadge.innerText = "ACTION REQUIRED ⚠️";
+      }
+
+      // Check badges
+      const docs = data.extracted_docs;
+      document.getElementById('badgeGstDoc').innerHTML = docs.gst ? '<span class="text-green-600 font-bold">✓ Scanned</span>' : '<span class="text-red-500">Missing</span>';
+      document.getElementById('badgeUdyamDoc').innerHTML = docs.udyam ? '<span class="text-green-600 font-bold">✓ Scanned</span>' : '<span class="text-red-500">Missing</span>';
+      document.getElementById('badgeSigDoc').innerHTML = docs.signatory ? '<span class="text-green-600 font-bold">✓ Scanned</span>' : '<span class="text-red-500">Missing</span>';
+      document.getElementById('badgeAddrDoc').innerHTML = docs.address ? '<span class="text-green-600 font-bold">✓ Scanned</span>' : '<span class="text-red-500">Missing</span>';
+
+      // Verification Items
+      const container = document.getElementById('kycChecksContainer');
+      container.innerHTML = '';
+      res.checks.forEach(c => {
+        container.innerHTML += `
+          <div class="p-3.5 bg-gray-50 border ${c.passed ? 'border-gray-200' : 'border-red-300 bg-red-50/50'} rounded-lg text-xs">
+            <div class="flex items-center justify-between mb-1">
+              <span class="font-bold text-gray-900">${c.check}</span>
+              <span class="font-semibold ${c.passed ? 'text-green-700' : 'text-red-600'}">${c.passed ? 'PASSED ✓' : 'FAILED ✗'}</span>
+            </div>
+            <pre class="text-[11px] text-gray-600 overflow-x-auto">${JSON.stringify(c, null, 2)}</pre>
+          </div>
+        `;
+      });
+
+      // Remediation Guidance
+      const remBox = document.getElementById('remediationBox');
+      const remList = document.getElementById('remediationList');
+      if (res.errors.length > 0) {
+        remBox.classList.remove('hidden');
+        remList.innerHTML = res.errors.map(e => `<li>${e}</li>`).join('');
+      } else {
+        remBox.classList.add('hidden');
+      }
+    }
+
+    async function uploadCustomKyc() {
+      const fileInput = document.getElementById('customKycFile');
+      if (!fileInput.files.length) return alert('Please select a file.');
+      const docType = document.getElementById('customDocType').value;
+
+      const fd = new FormData();
+      fd.append('file', fileInput.files[0]);
+      fd.append('doc_type', docType);
+
+      const resp = await fetch('/api/kyc/ocr-upload', { method: 'POST', body: fd });
+      const data = await resp.json();
+      alert(`OCR Extracted successfully!\nParsed Result:\n${JSON.stringify(data.parsed, null, 2)}`);
+    }
+
+    // ----------------- Registries -----------------
+    async function queryGSTIN() {
+      const gstin = document.getElementById('inputGSTIN').value.trim();
+      const resp = await fetch(`/api/registry/gstin/${gstin}`);
+      const data = await resp.json();
+      document.getElementById('gstinResultArea').innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function queryUdyam() {
+      const udyam = document.getElementById('inputUdyam').value.trim();
+      const resp = await fetch(`/api/registry/udyam/${udyam}`);
+      const data = await resp.json();
+      document.getElementById('udyamResultArea').innerText = JSON.stringify(data, null, 2);
+    }
+
+    // ----------------- Funnel & Hot Leads -----------------
+    async function loadFunnelAndWaterfall() {
+      const resp = await fetch('/api/analytics/funnel');
+      const data = await resp.json();
+      const stages = data.cumulative_funnel;
+
+      const container = document.getElementById('funnelWaterfallBars');
+      container.innerHTML = '';
+      const maxCount = stages['Lead'];
+
+      const stageLabels = [
+        { k: 'Lead', label: '1. Leads Generated', color: 'bg-blue-600' },
+        { k: 'Contacted', label: '2. Contacted (68%)', color: 'bg-indigo-600' },
+        { k: 'Needs assessed', label: '3. Needs Assessed (58%)', color: 'bg-purple-600' },
+        { k: 'Quote accepted', label: '4. Quote Accepted (44%)', color: 'bg-amber-600' },
+        { k: 'KYC complete', label: '5. KYC Complete (68%)', color: 'bg-emerald-600' },
+        { k: 'Activated', label: '6. Activated Customers (63%)', color: 'bg-accel-red' }
+      ];
+
+      stageLabels.forEach(s => {
+        const count = stages[s.k];
+        const pct = ((count / maxCount) * 100).toFixed(0);
+        container.innerHTML += `
+          <div>
+            <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+              <span>${s.label}</span>
+              <span>${count.toLocaleString()} (${pct}%)</span>
+            </div>
+            <div class="w-full bg-gray-100 rounded-full h-3.5 overflow-hidden">
+              <div class="${s.color} h-3.5 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    async function loadHotLeads() {
+      const resp = await fetch('/api/analytics/hot-leads?limit=15');
+      const leads = await resp.json();
+      const tbody = document.getElementById('hotLeadsTableBody');
+      tbody.innerHTML = '';
+
+      leads.forEach(l => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-gray-50">
+            <td class="py-2.5 px-3 font-bold ${l.score >= 80 ? 'text-accel-red' : 'text-amber-700'}">${l.score}</td>
+            <td class="py-2.5 px-3 font-mono">${l.lead_id}</td>
+            <td class="py-2.5 px-3 font-semibold text-gray-900">${l.business_name}</td>
+            <td class="py-2.5 px-3 text-gray-600">${l.segment}</td>
+            <td class="py-2.5 px-3 text-gray-500">${l.drop_reason}</td>
+            <td class="py-2.5 px-3 text-gray-500">${l.city}</td>
+            <td class="py-2.5 px-3 font-medium text-emerald-800 bg-emerald-50/50 rounded">${l.recommended_action}</td>
+          </tr>
+        `;
+      });
+    }
+
+    // Auto-init on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      sendAdvisorStep("");
+      queryGSTIN();
+      queryUdyam();
+    });
+  </script>
+</body>
+</html>
