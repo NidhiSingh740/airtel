@@ -6,7 +6,8 @@ from backend.app.controllers import (
     catalog_router,
     advisor_router,
     kyc_router,
-    analytics_router
+    analytics_router,
+    orders_router,
 )
 from backend.app.views import views_router
 from backend.app.services import registry_service, catalog_service
@@ -32,6 +33,7 @@ app.include_router(catalog_router)
 app.include_router(advisor_router)
 app.include_router(kyc_router)
 app.include_router(analytics_router)
+app.include_router(orders_router)
 
 # Register HTML Views
 app.include_router(views_router)
